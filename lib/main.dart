@@ -1,7 +1,32 @@
+import 'package:dns_changer/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await _setupWindow();
+
   runApp(const MainApp());
+}
+
+Future<void> _setupWindow() async {
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(400, 600),
+    minimumSize: Size(400, 600),
+    maximumSize: Size(400, 600),
+    center: true,
+    backgroundColor: Colors.transparent,
+    titleBarStyle: TitleBarStyle.hidden,
+    skipTaskbar: false,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+    windowManager.setMovable(true);
+  });
 }
 
 class MainApp extends StatelessWidget {
@@ -9,12 +34,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(useMaterial3: false),
+      home: const HomePage(),
     );
   }
 }
