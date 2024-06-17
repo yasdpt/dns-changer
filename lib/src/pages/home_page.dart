@@ -1,4 +1,5 @@
 import 'package:dns_changer/src/util/app_consts.dart';
+import 'package:dns_changer/src/widgets/app_header_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +20,14 @@ class _HomePageState extends State<HomePage> {
             fit: BoxFit.cover,
           ),
         ),
-        child: const SizedBox.shrink(),
+        child: Column(
+          children: [
+            const AppHeaderWidget(),
+            Expanded(
+              child: Container(),
+            )
+          ],
+        ),
       ),
     );
   }
