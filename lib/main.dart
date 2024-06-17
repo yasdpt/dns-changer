@@ -1,4 +1,4 @@
-import 'package:dns_changer/home_page.dart';
+import 'package:dns_changer/src/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
