@@ -14,18 +14,18 @@ Future<void> _setupWindow() async {
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(400, 600),
-    minimumSize: Size(400, 600),
-    maximumSize: Size(400, 600),
+    size: Size(360, 600),
+    minimumSize: Size(360, 600),
+    maximumSize: Size(360, 600),
     center: true,
     backgroundColor: Colors.transparent,
     titleBarStyle: TitleBarStyle.hidden,
     skipTaskbar: false,
   );
   windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setAsFrameless();
     await windowManager.show();
     await windowManager.focus();
-    windowManager.setMovable(true);
   });
 }
 
