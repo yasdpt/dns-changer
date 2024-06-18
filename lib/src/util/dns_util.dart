@@ -28,4 +28,54 @@ class DNSUtil {
   static final _whitespaceRE = RegExp(r"\s+");
   static String cleanupWhitespace(String input) =>
       input.replaceAll(_whitespaceRE, " ");
+
+  static Future<List<String?>> getCurrentDNSServers(String adapter) async {
+    final result = await Process.run(
+        'netsh', ['interface', 'ip', 'show', 'dnsserver', '"$adapter"']);
+
+    if ((result.stdout as String)
+        .contains("DNS servers configured through DHCP")) {
+      return [];
+    }
+
+    final ipPattern = RegExp(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b');
+    final ipMatches = ipPattern.allMatches(result.stdout);
+    final ips = ipMatches.map((match) => match.group(0)).toList();
+
+    return ips;
+  }
+
+  static Future<void> setDNS(
+    String adapter,
+    String primary,
+    String secondary,
+  ) async {
+    // Set primary DNS
+    await Process.run('netsh', [
+      'interface',
+      'ipv4',
+      'add',
+      'dns',
+      '"$adapter"',
+      primary,
+    ]);
+
+    // Set secondary DNS
+    await Process.run('netsh', [
+      'interface',
+      'ipv4',
+      'add',
+      'dns',
+      '"$adapter"',
+      secondary,
+      'index=2'
+    ]);
+
+    // Flush dns
+    await Process.run('ipconfig', ['/flushdns']);
+  }
+
+  // Delete dns records
+  static Future<void> clearDns(String adapter) async => await Process.run(
+      'netsh', ['interface', 'ip', 'set', 'dns', '"$adapter"', 'dhcp']);
 }
