@@ -1,3 +1,4 @@
+import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -10,9 +11,19 @@ class AppHeaderWidget extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 56,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
+        child: AppBar(
+          title: const Text(
+            AppConsts.appName,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              fontFamily: AppConsts.fontFamily,
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          elevation: 0,
+          actions: [
             IconButton(
               onPressed: () async {
                 await WindowManager.instance.close();
