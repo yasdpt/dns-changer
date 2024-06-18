@@ -1,9 +1,11 @@
-import 'package:dns_changer/src/util/dns_util.dart';
-import 'package:dns_changer/src/widgets/custom_dropdown_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/widgets/app_header_widget.dart';
+import 'package:dns_changer/src/util/dns_util.dart';
+import 'package:dns_changer/src/widgets/custom_dropdown_button.dart';
+import 'package:dns_changer/src/util/app_sizes.dart';
+import 'package:dns_changer/src/util/text_styles.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,7 +46,16 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 8.0),
+                    child: Text(
+                      "Select network adapter",
+                      style: TextStyles.large.white.bold,
+                    ),
+                  ),
+                  gapH8,
                   CustomDropdownButton(
                     value: _selectedAdapter,
                     items: _adapters,
@@ -54,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                       });
                     },
                   ),
-                  const SizedBox(height: 18.0),
+                  gapH16,
                 ],
               ),
             )
