@@ -18,6 +18,7 @@ class AppHeaderWidget extends StatelessWidget {
               fontSize: 24,
               fontWeight: FontWeight.bold,
               fontFamily: AppConsts.fontFamily,
+              color: Colors.white,
             ),
           ),
           backgroundColor: Colors.transparent,
