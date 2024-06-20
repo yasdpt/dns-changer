@@ -19,9 +19,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
-    - assets/images/background.jpg
-
   fonts:
     - family: Vazirmatn
       fonts:

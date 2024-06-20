@@ -1,6 +1,6 @@
+import 'package:dns_changer/src/util/app_colors.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/widgets/app_header_widget.dart';
 import 'package:dns_changer/src/util/dns_util.dart';
 import 'package:dns_changer/src/widgets/custom_dropdown_button.dart';
@@ -34,11 +34,9 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
+          color: AppColors.background,
           borderRadius: BorderRadius.circular(24),
-          image: const DecorationImage(
-            image: AssetImage(AppConsts.backgroundImage),
-            fit: BoxFit.cover,
-          ),
+          border: Border.all(color: Colors.white, width: 0.5),
         ),
         child: Column(
           children: [
