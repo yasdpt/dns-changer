@@ -1,4 +1,7 @@
+import 'package:dns_changer/src/util/app_colors.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
+import 'package:dns_changer/src/util/app_sizes.dart';
+import 'package:dns_changer/src/util/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -8,34 +11,65 @@ class AppHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DragToMoveArea(
-      child: SizedBox(
-        width: double.infinity,
-        height: 56,
-        child: AppBar(
-          title: const Text(
-            AppConsts.appName,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              fontFamily: AppConsts.fontFamily,
-              color: Colors.white,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 44,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: Row(
+                    children: [
+                      gapW16,
+                      Text(
+                        AppConsts.appName,
+                        style: TextStyles.large.white,
+                      ),
+                      gapW4,
+                      Text(
+                        AppConsts.appVersion,
+                        style: TextStyles.small.white,
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        await WindowManager.instance.minimize();
+                      },
+                      icon: const Icon(
+                        Icons.horizontal_rule_rounded,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        await WindowManager.instance.close();
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          elevation: 0,
-          actions: [
-            IconButton(
-              onPressed: () async {
-                await WindowManager.instance.close();
-              },
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-              ),
+          Container(
+            width: double.infinity,
+            height: 1,
+            decoration: const BoxDecoration(
+              color: AppColors.divider,
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
