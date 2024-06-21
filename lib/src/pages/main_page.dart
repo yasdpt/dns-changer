@@ -1,20 +1,19 @@
 import 'package:dns_changer/src/util/app_colors.dart';
+import 'package:dns_changer/src/util/app_sizes.dart';
+import 'package:dns_changer/src/util/dns_util.dart';
+import 'package:dns_changer/src/util/text_styles.dart';
+import 'package:dns_changer/src/widgets/app_header_widget.dart';
+import 'package:dns_changer/src/widgets/custom_dropdown_button.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dns_changer/src/widgets/app_header_widget.dart';
-import 'package:dns_changer/src/util/dns_util.dart';
-import 'package:dns_changer/src/widgets/custom_dropdown_button.dart';
-import 'package:dns_changer/src/util/app_sizes.dart';
-import 'package:dns_changer/src/util/text_styles.dart';
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainPageState extends State<MainPage> {
   final List<String> _adapters = [""];
 
   String _selectedAdapter = "";
