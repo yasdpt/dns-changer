@@ -12,4 +12,6 @@ class AppConsts {
   static const String infoIcon = "$icons/info.png";
   static const String settingsIcon = "$icons/settings.png";
   static const String updateIcon = "$icons/update.png";
+  static const String closeIcon = "$icons/close.png";
+  static const String minimizeIcon = "$icons/minimize.png";
 }
