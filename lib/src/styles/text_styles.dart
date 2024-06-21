@@ -1,3 +1,4 @@
+import 'package:dns_changer/src/styles/app_colors.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class TextStyles {
 // Add extension on [TextStyle] to easily change configuration
 // Example: TextStyles.regular.white (changes color to white)
 extension TextStyleExtesino on TextStyle {
-  TextStyle get black => copyWith(color: Colors.black);
+  TextStyle get black => copyWith(color: AppColors.black);
   TextStyle get white => copyWith(color: Colors.white);
 
   TextStyle get medium => copyWith(fontWeight: FontWeight.w500);
