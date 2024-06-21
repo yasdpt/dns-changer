@@ -2,6 +2,7 @@ import 'package:dns_changer/src/util/app_colors.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/util/app_sizes.dart';
 import 'package:dns_changer/src/util/text_styles.dart';
+import 'package:dns_changer/src/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -37,26 +38,21 @@ class AppHeaderWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    IconButton(
-                      onPressed: () async {
+                    IconWidget(
+                      onTap: () async {
                         await WindowManager.instance.minimize();
                       },
-                      icon: const Icon(
-                        Icons.horizontal_rule_rounded,
-                        size: 20,
-                        color: Colors.white,
-                      ),
+                      icon: AppConsts.minimizeIcon,
+                      size: 28.0,
                     ),
-                    IconButton(
-                      onPressed: () async {
+                    IconWidget(
+                      onTap: () async {
                         await WindowManager.instance.close();
                       },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 20,
-                        color: Colors.white,
-                      ),
+                      icon: AppConsts.closeIcon,
+                      size: 28.0,
                     ),
+                    gapW8,
                   ],
                 )
               ],
@@ -66,7 +62,7 @@ class AppHeaderWidget extends StatelessWidget {
             width: double.infinity,
             height: 1,
             decoration: const BoxDecoration(
-              color: AppColors.divider,
+              color: AppColors.dividerDark,
             ),
           )
         ],
