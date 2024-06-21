@@ -1,4 +1,5 @@
-import 'package:dns_changer/src/pages/home_page.dart';
+import 'package:dns_changer/src/pages/main_page.dart';
+import 'package:dns_changer/src/styles/app_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -14,9 +15,9 @@ Future<void> _setupWindow() async {
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(360, 600),
-    minimumSize: Size(360, 600),
-    maximumSize: Size(360, 600),
+    size: Size(412, 670),
+    minimumSize: Size(412, 670),
+    maximumSize: Size(412, 670),
     center: true,
     backgroundColor: Colors.transparent,
     titleBarStyle: TitleBarStyle.hidden,
@@ -36,8 +37,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(useMaterial3: false),
-      home: const HomePage(),
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      home: const MainPage(),
     );
   }
 }

@@ -4,7 +4,9 @@ class AppColors {
   static const Color red = Color(0xffDE5959);
   static const Color black = Color(0xff110C0C);
 
+  static const Color backgroundLight = Color(0xffFFFFFF);
   static const Color cardLight = Color(0xffF1F3F4);
+  static const Color dividerLight = Color(0xffE4E4E4);
 
   static const Color backgroundDark = Color(0xff17212B);
   static const Color dividerDark = Color(0xff383E47);
