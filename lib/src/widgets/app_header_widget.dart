@@ -1,7 +1,5 @@
-import 'package:dns_changer/src/util/app_colors.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
-import 'package:dns_changer/src/util/app_sizes.dart';
-import 'package:dns_changer/src/util/text_styles.dart';
+import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
@@ -26,12 +24,12 @@ class AppHeaderWidget extends StatelessWidget {
                       gapW16,
                       Text(
                         AppConsts.appName,
-                        style: TextStyles.large.white,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       gapW4,
                       Text(
                         AppConsts.appVersion,
-                        style: TextStyles.small.white,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],
                   ),
@@ -61,8 +59,8 @@ class AppHeaderWidget extends StatelessWidget {
           Container(
             width: double.infinity,
             height: 1,
-            decoration: const BoxDecoration(
-              color: AppColors.dividerDark,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           )
         ],

@@ -1,4 +1,4 @@
-import 'package:dns_changer/src/util/app_colors.dart';
+import 'package:dns_changer/src/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class IconWidget extends StatefulWidget {
@@ -6,11 +6,13 @@ class IconWidget extends StatefulWidget {
     super.key,
     required this.icon,
     required this.onTap,
+    this.color,
     this.size = 32.0,
     this.isSelected = false,
   });
   final String icon;
   final bool isSelected;
+  final Color? color;
   final double size;
   final VoidCallback onTap;
 
@@ -35,12 +37,15 @@ class _IconWidgetState extends State<IconWidget> {
         height: widget.size,
         decoration: BoxDecoration(
             color: widget.isSelected || _hover
-                ? AppColors.hoverDark
+                ? Theme.of(context).colorScheme.onPrimary
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(8.0)),
         padding: const EdgeInsets.all(4.0),
         child: Image.asset(
           widget.icon,
+          color: widget.isSelected || _hover
+              ? Theme.of(context).textTheme.bodySmall?.color
+              : widget.color ?? AppColors.secondary,
           fit: BoxFit.cover,
         ),
       ),

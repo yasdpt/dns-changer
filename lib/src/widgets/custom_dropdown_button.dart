@@ -36,7 +36,7 @@ class CustomDropdownButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             AppConsts.borderRadius,
           ),
-          dropdownColor: Theme.of(context).colorScheme.background,
+          dropdownColor: Theme.of(context).colorScheme.surface,
           onChanged: onChanged,
           items: items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(

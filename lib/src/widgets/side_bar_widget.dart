@@ -1,6 +1,5 @@
-import 'package:dns_changer/src/util/app_colors.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
-import 'package:dns_changer/src/util/app_sizes.dart';
+import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +39,7 @@ class SideBarWidget extends StatelessWidget {
             ),
             IconWidget(
               icon: AppConsts.githubIcon,
+              color: Theme.of(context).textTheme.bodySmall?.color,
               onTap: () {},
             ),
             gapH8,
@@ -49,8 +49,8 @@ class SideBarWidget extends StatelessWidget {
         Container(
           width: 1,
           height: 626,
-          decoration: const BoxDecoration(
-            color: AppColors.dividerDark,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],
