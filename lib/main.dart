@@ -1,6 +1,7 @@
 import 'package:dns_changer/src/pages/main_page.dart';
 import 'package:dns_changer/src/styles/app_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
@@ -8,7 +9,7 @@ Future<void> main() async {
 
   await _setupWindow();
 
-  runApp(const MainApp());
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 Future<void> _setupWindow() async {
@@ -37,6 +38,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark,
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
       home: const MainPage(),
