@@ -18,7 +18,7 @@ class DNSUtilLinuxImpl implements DNSUtil {
   Future<List<NetworkInterfaceModel>> getNetworkInterfacesList() async => [];
 
   @override
-  Future<List<String?>> getCurrentDNSServers(String interface) async {
+  Future<List<String?>> getCurrentDNSServers({String interface = ""}) async {
     final result = await Process.run(
         'netsh', ['interface', 'ip', 'show', 'dnsserver', '"$interface"']);
 

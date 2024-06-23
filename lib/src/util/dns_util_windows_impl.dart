@@ -27,7 +27,7 @@ class DNSUtilWindowsImpl implements DNSUtil {
 
       final interfaceName = line.getRange(3, line.length).join(" ").trim();
 
-      final dnsServers = await getCurrentDNSServers(interfaceName);
+      final dnsServers = await getCurrentDNSServers(interface: interfaceName);
 
       final networkInterface = NetworkInterfaceModel(
         name: interfaceName,
@@ -46,7 +46,7 @@ class DNSUtilWindowsImpl implements DNSUtil {
   }
 
   @override
-  Future<List<String?>> getCurrentDNSServers(String interface) async {
+  Future<List<String?>> getCurrentDNSServers({String interface = ""}) async {
     final result = await Process.run(
         'netsh', ['interface', 'ip', 'show', 'dnsserver', '"$interface"']);
 
