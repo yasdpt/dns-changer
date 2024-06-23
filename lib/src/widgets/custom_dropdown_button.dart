@@ -16,23 +16,21 @@ class CustomDropdownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300.0,
+      width: 298.0,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppConsts.borderRadius),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: value,
-          icon: const Icon(Icons.arrow_drop_down_rounded),
-          elevation: 0,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-            fontFamily: AppConsts.fontFamily,
-            color: Colors.black,
+          icon: Icon(
+            Icons.arrow_drop_down_rounded,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
           ),
+          elevation: 0,
+          style: Theme.of(context).textTheme.bodyMedium,
           borderRadius: BorderRadius.circular(
             AppConsts.borderRadius,
           ),
@@ -43,12 +41,7 @@ class CustomDropdownButton extends StatelessWidget {
               value: value,
               child: Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                  fontFamily: AppConsts.fontFamily,
-                  color: Colors.black,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             );
           }).toList(),
