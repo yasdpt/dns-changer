@@ -98,4 +98,18 @@ class DNSUtilWindowsImpl implements DNSUtil {
   // Flush dns
   @override
   Future<void> flushDNS() async => await Process.run('ipconfig', ['/flushdns']);
+
+  @override
+  Future<String> ping(String server) async {
+    final result = await Process.run('ping', [server, '-n', '1']);
+
+    if (result.stdout != "") {
+      final regExp = RegExp(r"time=(\d+)ms");
+      final match = regExp.firstMatch(result.stdout);
+
+      return match?.group(1) ?? "N/A";
+    }
+
+    return "N/A";
+  }
 }

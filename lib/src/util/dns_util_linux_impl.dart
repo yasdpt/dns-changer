@@ -70,4 +70,18 @@ class DNSUtilLinuxImpl implements DNSUtil {
   // Flush dns
   @override
   Future<void> flushDNS() async => await Process.run('ipconfig', ['/flushdns']);
+
+  @override
+  Future<String> ping(String server) async {
+    final result = await Process.run('ping', [server, '-c', '1']);
+
+    if (result.stdout != "") {
+      final regExp = RegExp(r"time=(?:(\d+) ms)|(?:(\d+\.\d+) ms)");
+      final match = regExp.firstMatch(result.stdout);
+
+      return match?.group(1) ?? match?.group(2) ?? "N/A";
+    }
+
+    return "N/A";
+  }
 }
