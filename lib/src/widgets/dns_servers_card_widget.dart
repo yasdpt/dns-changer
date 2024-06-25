@@ -1,3 +1,4 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:dns_changer/src/models/dns_provider_model.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/styles/text_styles.dart';
@@ -96,6 +97,7 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
                   gapH8,
                   Row(
                     children: [
+                      const SizedBox(width: 45),
                       Text(
                         "Latency:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
@@ -115,6 +117,7 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
                   gapH8,
                   Row(
                     children: [
+                      const SizedBox(width: 3),
                       Text(
                         "DNS Server #1:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
@@ -128,13 +131,18 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
                       IconWidget(
                         icon: AppConsts.copyIcon,
                         size: 24.0,
-                        onTap: () {},
+                        onTap: () async {
+                          await FlutterClipboard.copy(
+                            _selectedProvider.primary,
+                          );
+                        },
                       ),
                     ],
                   ),
                   gapH8,
                   Row(
                     children: [
+                      const SizedBox(width: 3),
                       Text(
                         "DNS Server #2:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
@@ -148,7 +156,11 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
                       IconWidget(
                         icon: AppConsts.copyIcon,
                         size: 24.0,
-                        onTap: () {},
+                        onTap: () async {
+                          await FlutterClipboard.copy(
+                            _selectedProvider.secondary,
+                          );
+                        },
                       ),
                     ],
                   ),
