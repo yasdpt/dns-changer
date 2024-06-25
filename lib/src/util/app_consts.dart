@@ -1,3 +1,5 @@
+import 'package:dns_changer/src/models/dns_provider_model.dart';
+
 class AppConsts {
   static const String appName = "DNS Changer";
   static const String appVersion = "v0.1";
@@ -14,4 +16,37 @@ class AppConsts {
   static const String updateIcon = "$icons/update.png";
   static const String closeIcon = "$icons/close.png";
   static const String minimizeIcon = "$icons/minimize.png";
+
+  static List<DNSProviderModel> myDNSProviders = [
+    DNSProviderModel(
+      name: "Electro",
+      primary: "78.157.42.100",
+      secondary: "78.157.42.101",
+    ),
+    DNSProviderModel(
+      name: "403.online",
+      primary: "10.202.10.202",
+      secondary: "10.202.10.102",
+    ),
+    DNSProviderModel(
+      name: "Radar game",
+      primary: "10.202.10.10",
+      secondary: "10.202.10.11",
+    ),
+    DNSProviderModel(
+      name: "Shecan",
+      primary: "178.22.122.100",
+      secondary: "185.51.200.2",
+    ),
+    DNSProviderModel(
+      name: "Google",
+      primary: "8.8.8.8",
+      secondary: "8.8.4.4",
+    ),
+    DNSProviderModel(
+      name: "Cloudflare",
+      primary: "1.1.1.1",
+      secondary: "1.0.0.1",
+    ),
+  ];
 }
