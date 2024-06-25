@@ -1,9 +1,8 @@
-import 'package:dns_changer/src/util/app_colors.dart';
-import 'package:dns_changer/src/util/app_sizes.dart';
-import 'package:dns_changer/src/util/dns_util.dart';
-import 'package:dns_changer/src/util/text_styles.dart';
+import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/widgets/app_header_widget.dart';
-import 'package:dns_changer/src/widgets/custom_dropdown_button.dart';
+import 'package:dns_changer/src/widgets/dns_servers_card_widget.dart';
+import 'package:dns_changer/src/widgets/network_interfaces_card_widget.dart';
+import 'package:dns_changer/src/widgets/side_bar_widget.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,55 +13,32 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final List<String> _adapters = [""];
-
-  String _selectedAdapter = "";
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration.zero, () {
-      _populateData();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: Colors.white, width: 0.5),
         ),
-        child: Column(
+        child: const Column(
           children: [
-            const AppHeaderWidget(),
+            AppHeaderWidget(),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 8.0),
-                    child: Text(
-                      "Select network adapter",
-                      style: TextStyles.large.white.bold,
-                    ),
-                  ),
-                  gapH8,
-                  CustomDropdownButton(
-                    value: _selectedAdapter,
-                    items: _adapters,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedAdapter = value ?? "";
-                      });
-                    },
-                  ),
-                  gapH16,
+                  SideBarWidget(),
+                  gapW12,
+                  Column(
+                    children: [
+                      gapH12,
+                      NetworkInterfacesCardWidget(),
+                      gapH12,
+                      DNSServersCardWidget(),
+                    ],
+                  )
                 ],
               ),
             )
@@ -70,15 +46,5 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
     );
-  }
-
-  void _populateData() async {
-    final adapters = await DNSUtil.getInterfaceNames();
-
-    setState(() {
-      _adapters.clear();
-      _adapters.addAll(adapters);
-      _selectedAdapter = _adapters.first;
-    });
   }
 }

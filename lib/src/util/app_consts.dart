@@ -6,6 +6,8 @@ class AppConsts {
   static const String fontFamily = "Vazirmatn";
   static const double borderRadius = 12.0;
 
+  static const prefsThemeKey = "theme";
+
   // Assets
   static const String icons = "assets/icons";
   static const String copyIcon = "$icons/copy.png";
