@@ -21,6 +21,19 @@ class ThemeController extends _$ThemeController {
     _prefs = await ref.read(prefsProvider.future);
     final theme = _prefs.getString(AppConsts.prefsThemeKey);
 
+    _setThemeByString(theme);
+  }
+
+  void setAppTheme(String? theme) {
+    _prefs.setString(
+      AppConsts.prefsThemeKey,
+      theme ?? "system",
+    );
+
+    _setThemeByString(theme);
+  }
+
+  void _setThemeByString(String? theme) {
     switch (theme) {
       case "light":
         state = ThemeMode.light;
@@ -31,14 +44,5 @@ class ThemeController extends _$ThemeController {
       default:
         state = ThemeMode.system;
     }
-  }
-
-  void setAppTheme(ThemeMode theme) {
-    _prefs.setString(
-      AppConsts.prefsThemeKey,
-      theme.name,
-    );
-
-    state = theme;
   }
 }
