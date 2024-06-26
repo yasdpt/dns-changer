@@ -1,14 +1,16 @@
+import 'package:dns_changer/src/controllers/tray_controller.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 
-class AppHeaderWidget extends StatelessWidget {
+class AppHeaderWidget extends ConsumerWidget {
   const AppHeaderWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DragToMoveArea(
       child: Column(
         children: [
@@ -45,7 +47,14 @@ class AppHeaderWidget extends StatelessWidget {
                     ),
                     IconWidget(
                       onTap: () async {
-                        await WindowManager.instance.close();
+                        final isMinizeToTrayEnabled =
+                            ref.read(trayControllerProvider);
+
+                        if (isMinizeToTrayEnabled) {
+                          await WindowManager.instance.hide();
+                        } else {
+                          await WindowManager.instance.close();
+                        }
                       },
                       icon: AppConsts.closeIcon,
                       size: 28.0,
