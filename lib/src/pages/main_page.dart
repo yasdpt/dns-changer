@@ -1,44 +1,43 @@
+import 'package:dns_changer/src/controllers/page_controller.dart';
+import 'package:dns_changer/src/pages/about_page.dart';
+import 'package:dns_changer/src/pages/dns_page.dart';
+import 'package:dns_changer/src/pages/settings_page.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
+import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/widgets/app_header_widget.dart';
-import 'package:dns_changer/src/widgets/dns_servers_card_widget.dart';
-import 'package:dns_changer/src/widgets/network_interfaces_card_widget.dart';
 import 'package:dns_changer/src/widgets/side_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends ConsumerWidget {
   const MainPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final page = ref.watch(pageControllerProvider);
 
-class _MainPageState extends State<MainPage> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppConsts.appBorderRadius),
           border: Border.all(color: Colors.white, width: 0.5),
         ),
-        child: const Column(
+        child: Column(
           children: [
-            AppHeaderWidget(),
+            const AppHeaderWidget(),
             Expanded(
               child: Row(
                 children: [
-                  SideBarWidget(),
+                  const SideBarWidget(),
                   gapW12,
-                  Column(
-                    children: [
-                      gapH12,
-                      NetworkInterfacesCardWidget(),
-                      gapH12,
-                      DNSServersCardWidget(),
-                    ],
-                  )
+                  switch (page) {
+                    0 => const DNSPage(),
+                    1 => const SettingsPage(),
+                    2 => const AboutPage(),
+                    _ => const SizedBox.shrink(),
+                  }
                 ],
               ),
             )
