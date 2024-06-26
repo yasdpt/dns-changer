@@ -25,7 +25,6 @@ class AppThemes {
       labelMedium: TextStyles.medium
           .copyWith(color: AppColors.secondary), // Used for secondary text
     ),
-    useMaterial3: false,
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -50,6 +49,5 @@ class AppThemes {
       labelMedium: TextStyles.medium
           .copyWith(color: AppColors.secondary), // Used for secondary text
     ),
-    useMaterial3: false,
   );
 }
