@@ -1,5 +1,6 @@
 import 'package:dns_changer/src/styles/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:launch_at_startup/launch_at_startup.dart';
 
 class AppUtil {
   static final _whitespaceRE = RegExp(r"\s+");
@@ -12,4 +13,16 @@ class AppUtil {
 
     return AppColors.red;
   }
+
+  static Future<void> changeStartup(bool isEnabled) async {
+    if (isEnabled) {
+      await launchAtStartup.disable();
+    }
+
+    await launchAtStartup.enable();
+  }
+}
+
+extension CapitalizeExtension on String {
+  String capitalize() => this[0].toUpperCase() + substring(1);
 }
