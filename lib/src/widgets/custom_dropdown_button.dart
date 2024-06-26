@@ -8,15 +8,17 @@ class CustomDropdownButton extends StatelessWidget {
     required this.value,
     required this.items,
     required this.onChanged,
+    this.width = 298.0,
   });
   final String value;
   final List<String> items;
+  final double width;
   final Function(String? value) onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 298.0,
+      width: width,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppConsts.borderRadius),
