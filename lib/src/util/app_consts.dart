@@ -1,15 +1,22 @@
+import 'dart:io';
+
 import 'package:dns_changer/src/models/dns_provider_model.dart';
 
 class AppConsts {
   static const String appName = "DNS Changer";
   static const String appVersion = "v0.1";
+  static const String appGithubUrl = "https://github.com/yasdpt/dns-changer";
   static const String fontFamily = "Vazirmatn";
   static const double borderRadius = 12.0;
 
+  static double appBorderRadius = Platform.isLinux ? 0.0 : 24.0;
+
   static const prefsThemeKey = "theme";
+  static const prefsSystemTrayKey = "systemTrayEnabled";
 
   // Assets
   static const String icons = "assets/icons";
+  static const String images = "assets/images";
   static const String copyIcon = "$icons/copy.png";
   static const String dnsIcon = "$icons/dns.png";
   static const String githubIcon = "$icons/github.png";
@@ -18,6 +25,8 @@ class AppConsts {
   static const String updateIcon = "$icons/update.png";
   static const String closeIcon = "$icons/close.png";
   static const String minimizeIcon = "$icons/minimize.png";
+  static const String logoICO = "$images/logo.ico";
+  static const String logoPNG = "$images/logo.png";
 
   static List<DNSProviderModel> myDNSProviders = [
     DNSProviderModel(
