@@ -16,10 +16,11 @@ class AppUtil {
 
   static Future<void> changeStartup(bool isEnabled) async {
     if (isEnabled) {
-      await launchAtStartup.disable();
+      await launchAtStartup.enable();
+      return;
     }
 
-    await launchAtStartup.enable();
+    await launchAtStartup.disable();
   }
 }
 
