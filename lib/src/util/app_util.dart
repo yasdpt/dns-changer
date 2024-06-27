@@ -8,6 +8,7 @@ class AppUtil {
       input.replaceAll(_whitespaceRE, " ");
 
   static Color getLatencyColor(num latency) {
+    if (latency < 0) return AppColors.red;
     if (latency <= 70) return AppColors.green;
     if (latency <= 200) return AppColors.orange;
 

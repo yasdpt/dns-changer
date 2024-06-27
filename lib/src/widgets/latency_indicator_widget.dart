@@ -18,14 +18,14 @@ class LatencyIndicatorWidget extends StatelessWidget {
             height: 6,
             color: AppUtil.getLatencyColor(latency),
           ),
-          if (latency <= 200)
+          if (latency <= 200 && latency > 0)
             Container(
               width: 2,
               height: 8,
               color: AppUtil.getLatencyColor(latency),
               margin: const EdgeInsetsDirectional.only(start: 2),
             ),
-          if (latency <= 70)
+          if (latency <= 70 && latency > 0)
             Container(
               width: 2,
               height: 10,
