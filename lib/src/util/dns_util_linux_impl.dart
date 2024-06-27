@@ -20,14 +20,16 @@ class DNSUtilLinuxImpl implements DNSUtil {
   @override
   Future<List<String?>> getCurrentDNSServers({String interface = ""}) async {
     final result = await Process.run(
-        'netsh', ['interface', 'ip', 'show', 'dnsserver', '"$interface"']);
+      'grep',
+      ['nameserver' '/etc/resolv.conf', '|', 'awk', "'{print", r"$2}'"],
+    );
 
-    if ((result.stdout as String)
-        .contains("DNS servers configured through DHCP")) {
+    if ((result.stdout as String).isEmpty) {
       return [];
     }
 
-    final ipPattern = RegExp(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b');
+    final ipPattern =
+        RegExp(r'/(?<=nameserver\s)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/g');
     final ipMatches = ipPattern.allMatches(result.stdout);
     final ips = ipMatches.map((match) => match.group(0)).toList();
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dns_changer/src/models/network_interface_model.dart';
 import 'package:dns_changer/src/util/app_util.dart';
 import 'package:dns_changer/src/util/dns_util.dart';
+import 'package:flutter/foundation.dart';
 
 class DNSUtilWindowsImpl implements DNSUtil {
   // Get network interfaces string
@@ -68,6 +69,11 @@ class DNSUtilWindowsImpl implements DNSUtil {
     String primary,
     String secondary,
   ) async {
+    debugPrint("Setting DNS for $interface: $primary, $secondary");
+
+    // Clear any DNS first
+    await clearDNS(interface);
+
     // Set primary DNS
     await Process.run('netsh', [
       'interface',
