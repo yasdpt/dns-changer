@@ -2,16 +2,12 @@ import 'dart:io';
 
 import 'package:dns_changer/src/models/network_interface_model.dart';
 import 'package:dns_changer/src/util/dns_util.dart';
+import 'package:flutter/foundation.dart';
 
 class DNSUtilLinuxImpl implements DNSUtil {
   // Get network interfaces string
   @override
-  Future<String> getNetworkInterfacesRaw() async {
-    final result =
-        await Process.run('netsh', ['interface', 'show', 'interface']);
-
-    return result.stdout;
-  }
+  Future<String> getNetworkInterfacesRaw() async => "";
 
   // Extract list of network interfaces
   @override
@@ -21,15 +17,16 @@ class DNSUtilLinuxImpl implements DNSUtil {
   Future<List<String?>> getCurrentDNSServers({String interface = ""}) async {
     final result = await Process.run(
       'grep',
-      ['nameserver' '/etc/resolv.conf', '|', 'awk', "'{print", r"$2}'"],
+      ['nameserver', '/etc/resolv.conf', '|', 'awk', "'{print", "\$2}'"],
     );
+
+    debugPrint("result of query: ${result.stdout}");
 
     if ((result.stdout as String).isEmpty) {
       return [];
     }
 
-    final ipPattern =
-        RegExp(r'/(?<=nameserver\s)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/g');
+    final ipPattern = RegExp(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b');
     final ipMatches = ipPattern.allMatches(result.stdout);
     final ips = ipMatches.map((match) => match.group(0)).toList();
 
@@ -42,26 +39,17 @@ class DNSUtilLinuxImpl implements DNSUtil {
     String primary,
     String secondary,
   ) async {
-    // Set primary DNS
-    await Process.run('netsh', [
-      'interface',
-      'ipv4',
-      'add',
-      'dns',
-      '"$interface"',
-      primary,
-    ]);
+    await Process.run(
+      'sudo',
+      [
+        'sh',
+        '-c',
+        '''echo "nameserver $primary
+nameserver $secondary" > /etc/resolv.conf'''
+      ],
+    );
 
-    // Set secondary DNS
-    await Process.run('netsh', [
-      'interface',
-      'ipv4',
-      'add',
-      'dns',
-      '"$interface"',
-      secondary,
-      'index=2'
-    ]);
+    await Process.run('systemctl', ['restart', 'systemd-networkd']);
   }
 
   // Delete dns records
@@ -81,9 +69,9 @@ class DNSUtilLinuxImpl implements DNSUtil {
       final regExp = RegExp(r"time=(?:(\d+) ms)|(?:(\d+\.\d+) ms)");
       final match = regExp.firstMatch(result.stdout);
 
-      return match?.group(1) ?? match?.group(2) ?? "N/A";
+      return match?.group(1) ?? match?.group(2) ?? "-1";
     }
 
-    return "N/A";
+    return "-1";
   }
 }
