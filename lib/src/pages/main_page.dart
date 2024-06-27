@@ -53,7 +53,6 @@ class _MainPageState extends ConsumerState<MainPage> with TrayListener {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(AppConsts.appBorderRadius),
-          border: Border.all(color: Colors.white, width: 0.5),
         ),
         child: Column(
           children: [
