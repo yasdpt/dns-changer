@@ -1,4 +1,5 @@
 import 'package:clipboard/clipboard.dart';
+import 'package:dns_changer/src/controllers/dns_provider_controller.dart';
 import 'package:dns_changer/src/models/dns_provider_model.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/styles/text_styles.dart';
@@ -22,15 +23,11 @@ class DNSServersCardWidget extends ConsumerStatefulWidget {
 class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
   DNSUtil? dnsUtil;
 
-  late DNSProviderModel _selectedProvider;
-
   String _currentPing = "-1";
 
   @override
   void initState() {
     super.initState();
-
-    _selectedProvider = AppConsts.myDNSProviders.first;
 
     dnsUtil = ref.read(myDNSUtilProvider);
 
@@ -41,6 +38,8 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedDNSProvider = ref.watch(dNSProviderControllerProvider);
+
     return Container(
       width: 322.0,
       decoration: BoxDecoration(
@@ -60,120 +59,125 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
           ),
           gapH8,
           CustomDropdownButton(
-            value: _selectedProvider.name,
+            value: selectedDNSProvider.name,
             items: AppConsts.myDNSProviders
                 .map((element) => element.name)
                 .toList(),
             onChanged: (value) {
-              setState(() {
-                _selectedProvider = AppConsts.myDNSProviders.firstWhere(
-                  (inteface) => inteface.name == value,
-                );
-              });
+              ref
+                  .read(dNSProviderControllerProvider.notifier)
+                  .setCurrentDNSProvider(AppConsts.myDNSProviders.firstWhere(
+                    (inteface) => inteface.name == value,
+                  ));
 
-              _populateData();
+              _populateData(selectedDNSProvider: selectedDNSProvider);
             },
           ),
           gapH16,
           Padding(
-              padding: const EdgeInsetsDirectional.only(start: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      gapW2,
-                      Text(
-                        "Provider name:",
-                        style: Theme.of(context).textTheme.bodyMedium?.medium,
+            padding: const EdgeInsetsDirectional.only(start: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    gapW2,
+                    Text(
+                      "Provider name:",
+                      style: Theme.of(context).textTheme.bodyMedium?.medium,
+                    ),
+                    gapW8,
+                    Text(
+                      selectedDNSProvider.name,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+                gapH8,
+                Row(
+                  children: [
+                    const SizedBox(width: 45),
+                    Text(
+                      "Latency:",
+                      style: Theme.of(context).textTheme.bodyMedium?.medium,
+                    ),
+                    gapW8,
+                    LatencyIndicatorWidget(latency: num.parse(_currentPing)),
+                    gapW8,
+                    Text("$_currentPing ms"),
+                    gapW4,
+                    IconWidget(
+                      icon: AppConsts.updateIcon,
+                      size: 24.0,
+                      onTap: () => _populateData(
+                        selectedDNSProvider: selectedDNSProvider,
                       ),
-                      gapW8,
-                      Text(
-                        _selectedProvider.name,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                  gapH8,
-                  Row(
-                    children: [
-                      const SizedBox(width: 45),
-                      Text(
-                        "Latency:",
-                        style: Theme.of(context).textTheme.bodyMedium?.medium,
-                      ),
-                      gapW8,
-                      LatencyIndicatorWidget(latency: num.parse(_currentPing)),
-                      gapW8,
-                      Text("$_currentPing ms"),
-                      gapW4,
-                      IconWidget(
-                        icon: AppConsts.updateIcon,
-                        size: 24.0,
-                        onTap: _populateData,
-                      ),
-                    ],
-                  ),
-                  gapH8,
-                  Row(
-                    children: [
-                      const SizedBox(width: 3),
-                      Text(
-                        "DNS Server #1:",
-                        style: Theme.of(context).textTheme.bodyMedium?.medium,
-                      ),
-                      gapW8,
-                      Text(
-                        _selectedProvider.primary,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      gapW4,
-                      IconWidget(
-                        icon: AppConsts.copyIcon,
-                        size: 24.0,
-                        onTap: () async {
-                          await FlutterClipboard.copy(
-                            _selectedProvider.primary,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  gapH8,
-                  Row(
-                    children: [
-                      const SizedBox(width: 3),
-                      Text(
-                        "DNS Server #2:",
-                        style: Theme.of(context).textTheme.bodyMedium?.medium,
-                      ),
-                      gapW8,
-                      Text(
-                        _selectedProvider.secondary,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      gapW4,
-                      IconWidget(
-                        icon: AppConsts.copyIcon,
-                        size: 24.0,
-                        onTap: () async {
-                          await FlutterClipboard.copy(
-                            _selectedProvider.secondary,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  gapH8,
-                ],
-              )),
+                    ),
+                  ],
+                ),
+                gapH8,
+                Row(
+                  children: [
+                    const SizedBox(width: 3),
+                    Text(
+                      "DNS Server #1:",
+                      style: Theme.of(context).textTheme.bodyMedium?.medium,
+                    ),
+                    gapW8,
+                    Text(
+                      selectedDNSProvider.primary,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    gapW4,
+                    IconWidget(
+                      icon: AppConsts.copyIcon,
+                      size: 24.0,
+                      onTap: () async {
+                        await FlutterClipboard.copy(
+                          selectedDNSProvider.primary,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                gapH8,
+                Row(
+                  children: [
+                    const SizedBox(width: 3),
+                    Text(
+                      "DNS Server #2:",
+                      style: Theme.of(context).textTheme.bodyMedium?.medium,
+                    ),
+                    gapW8,
+                    Text(
+                      selectedDNSProvider.secondary,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    gapW4,
+                    IconWidget(
+                      icon: AppConsts.copyIcon,
+                      size: 24.0,
+                      onTap: () async {
+                        await FlutterClipboard.copy(
+                          selectedDNSProvider.secondary,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                gapH8,
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  void _populateData() async {
-    final ping = await dnsUtil?.ping(_selectedProvider.primary);
+  void _populateData({DNSProviderModel? selectedDNSProvider}) async {
+    final ping = await dnsUtil?.ping(
+      selectedDNSProvider?.primary ?? AppConsts.myDNSProviders.first.primary,
+    );
 
     setState(() {
       _currentPing = ping ?? "N/A";

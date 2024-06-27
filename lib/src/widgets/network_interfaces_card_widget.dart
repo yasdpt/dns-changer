@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dns_changer/src/controllers/interface_controller.dart';
 import 'package:dns_changer/src/models/network_interface_model.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
@@ -29,16 +30,17 @@ class NetworkInterfacesCardWidget extends ConsumerWidget {
   }
 }
 
-class _CardWindows extends StatefulWidget {
+class _CardWindows extends ConsumerStatefulWidget {
   const _CardWindows(this.dnsUtil);
   final DNSUtil dnsUtil;
   @override
-  State<_CardWindows> createState() => _CardWindowsState();
+  ConsumerState<_CardWindows> createState() => _CardWindowsState();
 }
 
-class _CardWindowsState extends State<_CardWindows> {
-  final List<NetworkInterfaceModel> _interfaces = [NetworkInterfaceModel()];
-  NetworkInterfaceModel _selectedInterface = NetworkInterfaceModel();
+class _CardWindowsState extends ConsumerState<_CardWindows> {
+  final List<NetworkInterfaceModel> _interfaces = [
+    const NetworkInterfaceModel()
+  ];
 
   @override
   void initState() {
@@ -51,6 +53,12 @@ class _CardWindowsState extends State<_CardWindows> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedInterface = ref.watch(interfaceControllerProvider);
+
+    ref.listen(interfaceControllerProvider, (prev, next) {
+      _reloadListOfNetworkInterfaces();
+    });
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,14 +71,14 @@ class _CardWindowsState extends State<_CardWindows> {
         ),
         gapH8,
         CustomDropdownButton(
-          value: _selectedInterface.name,
+          value: selectedInterface.name,
           items: _interfaces.map((element) => element.name).toList(),
           onChanged: (value) {
-            setState(() {
-              _selectedInterface = _interfaces.firstWhere(
-                (inteface) => inteface.name == value,
-              );
-            });
+            ref
+                .read(interfaceControllerProvider.notifier)
+                .setCurrentInterface(_interfaces.firstWhere(
+                  (inteface) => inteface.name == value,
+                ));
           },
         ),
         gapH16,
@@ -88,7 +96,7 @@ class _CardWindowsState extends State<_CardWindows> {
                     ),
                     gapW8,
                     Text(
-                      _selectedInterface.adminState,
+                      selectedInterface.adminState,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
@@ -103,7 +111,7 @@ class _CardWindowsState extends State<_CardWindows> {
                     ),
                     gapW8,
                     Text(
-                      _selectedInterface.state,
+                      selectedInterface.state,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
@@ -118,7 +126,7 @@ class _CardWindowsState extends State<_CardWindows> {
                     ),
                     gapW8,
                     Text(
-                      _selectedInterface.type,
+                      selectedInterface.type,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
@@ -132,7 +140,7 @@ class _CardWindowsState extends State<_CardWindows> {
                     ),
                     gapW8,
                     Text(
-                      _selectedInterface.dnsServers,
+                      selectedInterface.dnsServers,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
@@ -150,23 +158,30 @@ class _CardWindowsState extends State<_CardWindows> {
     setState(() {
       _interfaces.clear();
       _interfaces.addAll(interfaces);
-      _selectedInterface = _interfaces.first;
+      ref
+          .read(interfaceControllerProvider.notifier)
+          .setCurrentInterface(_interfaces.first);
     });
+  }
+
+  Future<void> _reloadListOfNetworkInterfaces() async {
+    final interfaces = await widget.dnsUtil.getNetworkInterfacesList();
+
+    _interfaces.clear();
+    _interfaces.addAll(interfaces);
   }
 }
 
-class _CardLinux extends StatefulWidget {
+class _CardLinux extends ConsumerStatefulWidget {
   const _CardLinux(this.dnsUtil);
 
   final DNSUtil dnsUtil;
 
   @override
-  State<_CardLinux> createState() => _CardLinuxState();
+  ConsumerState<_CardLinux> createState() => _CardLinuxState();
 }
 
-class _CardLinuxState extends State<_CardLinux> {
-  String _interfaceInfo = "";
-
+class _CardLinuxState extends ConsumerState<_CardLinux> {
   @override
   void initState() {
     super.initState();
@@ -178,6 +193,8 @@ class _CardLinuxState extends State<_CardLinux> {
 
   @override
   Widget build(BuildContext context) {
+    final currentNetworkInterface = ref.watch(interfaceControllerProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -201,9 +218,7 @@ class _CardLinuxState extends State<_CardLinux> {
                   ),
                   gapW8,
                   Text(
-                    _interfaceInfo.isEmpty
-                        ? "Configured though DHCP"
-                        : _interfaceInfo,
+                    currentNetworkInterface.dnsServers,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
@@ -219,8 +234,12 @@ class _CardLinuxState extends State<_CardLinux> {
   void _populateData() async {
     final currentDNSServers = await widget.dnsUtil.getCurrentDNSServers();
 
-    setState(() {
-      _interfaceInfo = currentDNSServers.join(" ").trim();
-    });
+    ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
+          NetworkInterfaceModel(
+            dnsServers: currentDNSServers.isEmpty
+                ? "Configured through DHCP"
+                : currentDNSServers.join(", ").trim(),
+          ),
+        );
   }
 }
