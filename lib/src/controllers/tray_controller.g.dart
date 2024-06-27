@@ -6,7 +6,7 @@ part of 'tray_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trayControllerHash() => r'f9982df1649952daef71b79b04f49133c9122580';
+String _$trayControllerHash() => r'82817771c25b25070c9c2884c5128a528de5bda1';
 
 /// See also [TrayController].
 @ProviderFor(TrayController)
