@@ -30,9 +30,9 @@ Future<void> _setupWindow() async {
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(400, 670),
-    minimumSize: Size(400, 670),
-    maximumSize: Size(400, 670),
+    size: Size(402, 670),
+    minimumSize: Size(402, 670),
+    maximumSize: Size(402, 670),
     center: true,
     backgroundColor: Colors.transparent,
     titleBarStyle: TitleBarStyle.hidden,
