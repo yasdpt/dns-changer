@@ -1,19 +1,66 @@
+import 'package:dns_changer/src/controllers/dns_provider_controller.dart';
+import 'package:dns_changer/src/controllers/interface_controller.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
+import 'package:dns_changer/src/util/dns_util.dart';
+import 'package:dns_changer/src/util/provider.dart';
+import 'package:dns_changer/src/widgets/dns_config_buttons_widget.dart';
 import 'package:dns_changer/src/widgets/dns_servers_card_widget.dart';
 import 'package:dns_changer/src/widgets/network_interfaces_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DNSPage extends StatelessWidget {
+class DNSPage extends ConsumerStatefulWidget {
   const DNSPage({super.key});
 
   @override
+  ConsumerState<DNSPage> createState() => _DNSPageState();
+}
+
+class _DNSPageState extends ConsumerState<DNSPage> {
+  DNSUtil? _dnsUtil;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () {
+      _dnsUtil = ref.read(myDNSUtilProvider);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         gapH12,
-        NetworkInterfacesCardWidget(),
+        const NetworkInterfacesCardWidget(),
         gapH12,
-        DNSServersCardWidget(),
+        const DNSServersCardWidget(),
+        gapH12,
+        DNSConfigButtonsWidget(
+          onSetDNS: () async {
+            final currentNetworkInterface =
+                ref.read(interfaceControllerProvider);
+            final currentDNSProvider = ref.read(dNSProviderControllerProvider);
+
+            // Set DNS
+            await _dnsUtil?.setDNS(
+              currentNetworkInterface.name,
+              currentDNSProvider.primary,
+              currentDNSProvider.secondary,
+            );
+
+            // Update current interface with new dns
+            ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
+                  currentNetworkInterface.copyWith(
+                      dnsServers:
+                          "${currentDNSProvider.primary}, ${currentDNSProvider.secondary}"),
+                );
+          },
+          onClearDNS: () =>
+              _dnsUtil?.clearDNS(ref.read(interfaceControllerProvider).name),
+          onFlushDNS: () => _dnsUtil?.flushDNS(),
+        ),
       ],
     );
   }
