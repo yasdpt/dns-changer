@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dns_changer/src/controllers/interface_controller.dart';
+import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/models/network_interface_model.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
@@ -65,7 +66,7 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
         Padding(
           padding: const EdgeInsetsDirectional.only(start: 8.0),
           child: Text(
-            "Select network interface",
+            translate('selectNetworkInterface', context),
             style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
@@ -93,22 +94,22 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        "Admin state:",
+                        "${translate('adminState', context)}:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
                       ),
                       gapH8,
                       Text(
-                        "State:",
+                        "${translate('state', context)}:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
                       ),
                       gapH8,
                       Text(
-                        "Type:",
+                        "${translate('type', context)}:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
                       ),
                       gapH8,
                       Text(
-                        "DNS Servers:",
+                        "${translate('dnsServers', context)}:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
                       )
                     ],
@@ -134,7 +135,9 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
                       ),
                       gapH12,
                       Text(
-                        selectedInterface.dnsServers,
+                        selectedInterface.dnsServers.isEmpty
+                            ? translate('configuredThroughDHCP', context)
+                            : selectedInterface.dnsServers,
                         style: Theme.of(context).textTheme.bodySmall,
                       )
                     ],
@@ -197,7 +200,7 @@ class _CardLinuxState extends ConsumerState<_CardLinux> {
         Padding(
           padding: const EdgeInsetsDirectional.only(start: 8.0),
           child: Text(
-            "Network info",
+            translate('networkInfo', context),
             style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
@@ -209,7 +212,7 @@ class _CardLinuxState extends ConsumerState<_CardLinux> {
               Row(
                 children: [
                   Text(
-                    "DNS Servers:",
+                    "${translate('dnsServers', context)}:",
                     style: Theme.of(context).textTheme.bodyMedium?.medium,
                   ),
                   gapW8,
@@ -228,12 +231,15 @@ class _CardLinuxState extends ConsumerState<_CardLinux> {
   }
 
   void _populateData() async {
+    final configuredThroughDHCPText =
+        translate('configuredThroughDHCP', context);
+
     final currentDNSServers = await widget.dnsUtil.getCurrentDNSServers();
 
     ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
           NetworkInterfaceModel(
             dnsServers: currentDNSServers.isEmpty
-                ? "Configured through DHCP"
+                ? configuredThroughDHCPText
                 : currentDNSServers.join(", ").trim(),
           ),
         );

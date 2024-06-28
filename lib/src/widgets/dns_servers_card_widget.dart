@@ -1,5 +1,6 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:dns_changer/src/controllers/dns_provider_controller.dart';
+import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/models/dns_provider_model.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/styles/text_styles.dart';
@@ -53,7 +54,7 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
           Padding(
             padding: const EdgeInsetsDirectional.only(start: 8.0),
             child: Text(
-              "Select DNS Server",
+              translate('selectDNSServer', context),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
@@ -88,22 +89,22 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Provider name:",
+                            "${translate('providerName', context)}:",
                             style:
                                 Theme.of(context).textTheme.bodyMedium?.medium,
                           ),
                           Text(
-                            "Latency:",
+                            "${translate('latency', context)}:",
                             style:
                                 Theme.of(context).textTheme.bodyMedium?.medium,
                           ),
                           Text(
-                            "DNS Server #1:",
+                            "${translate('dnsServer', context)} #1:",
                             style:
                                 Theme.of(context).textTheme.bodyMedium?.medium,
                           ),
                           Text(
-                            "DNS Server #2:",
+                            "${translate('dnsServer', context)} #2:",
                             style:
                                 Theme.of(context).textTheme.bodyMedium?.medium,
                           ),
@@ -206,8 +207,10 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
       selectedDNSProvider?.primary ?? AppConsts.myDNSProviders.first.primary,
     );
 
-    setState(() {
-      _currentPing = ping ?? "N/A";
-    });
+    if (mounted) {
+      setState(() {
+        _currentPing = ping ?? "N/A";
+      });
+    }
   }
 }

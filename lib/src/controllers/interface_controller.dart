@@ -6,7 +6,7 @@ part 'interface_controller.g.dart';
 @riverpod
 class InterfaceController extends _$InterfaceController {
   @override
-  NetworkInterfaceModel build() => NetworkInterfaceModel();
+  NetworkInterfaceModel build() => const NetworkInterfaceModel();
 
   void setCurrentInterface(NetworkInterfaceModel interface) {
     state = interface;

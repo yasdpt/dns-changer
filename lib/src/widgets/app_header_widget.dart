@@ -1,4 +1,5 @@
 import 'package:dns_changer/src/controllers/tray_controller.dart';
+import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/widgets/icon_widget.dart';
@@ -25,7 +26,7 @@ class AppHeaderWidget extends ConsumerWidget {
                     children: [
                       gapW16,
                       Text(
-                        AppConsts.appName,
+                        translate('appName', context),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],

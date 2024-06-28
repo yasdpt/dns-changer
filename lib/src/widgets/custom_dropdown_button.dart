@@ -8,9 +8,12 @@ class CustomDropdownButton extends StatelessWidget {
     required this.value,
     required this.items,
     required this.onChanged,
+    this.customValueConverter,
     this.width = 298.0,
   });
   final String value;
+  // customValueConverter for translating dropdowns that have localized items
+  final String Function(String value)? customValueConverter;
   final List<String> items;
   final double width;
   final Function(String? value) onChanged;
@@ -42,7 +45,9 @@ class CustomDropdownButton extends StatelessWidget {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(
-                value,
+                customValueConverter != null
+                    ? customValueConverter!(value)
+                    : value,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             );

@@ -1,3 +1,4 @@
+import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/styles/app_colors.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/styles/text_styles.dart';
@@ -37,7 +38,7 @@ class DNSConfigButtonsWidget extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "Set DNS",
+                translate('setDNS', context),
                 style: Theme.of(context).textTheme.bodyMedium?.bold,
               ),
             ),
@@ -58,7 +59,7 @@ class DNSConfigButtonsWidget extends StatelessWidget {
                 ),
               ),
               child: Text(
-                "Clear DNS",
+                translate('clearDNS', context),
                 style: TextStyles.medium.white.bold,
               ),
             ),
@@ -75,7 +76,7 @@ class DNSConfigButtonsWidget extends StatelessWidget {
                 Theme.of(context).textTheme.bodySmall?.color ?? Colors.white),
           ),
           child: Text(
-            "Flush DNS",
+            translate('flushDNS', context),
             style: Theme.of(context).textTheme.bodyMedium?.bold.copyWith(
                 color: Theme.of(context).colorScheme.onSecondaryContainer),
           ),

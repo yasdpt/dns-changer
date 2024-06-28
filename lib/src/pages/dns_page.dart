@@ -1,5 +1,6 @@
 import 'package:dns_changer/src/controllers/dns_provider_controller.dart';
 import 'package:dns_changer/src/controllers/interface_controller.dart';
+import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/util/dns_util.dart';
 import 'package:dns_changer/src/util/provider.dart';
@@ -30,6 +31,9 @@ class _DNSPageState extends ConsumerState<DNSPage> {
 
   @override
   Widget build(BuildContext context) {
+    final configuredThroughDHCPText =
+        translate("configuredThroughDHCP", context);
+
     return Column(
       children: [
         gapH12,
@@ -55,8 +59,9 @@ class _DNSPageState extends ConsumerState<DNSPage> {
             // Update current interface with new dns
             ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
                   currentNetworkInterface.copyWith(
-                      dnsServers: dnsServers?.join(", ").trim() ??
-                          "Configured through DHCP"),
+                    dnsServers: dnsServers?.join(", ").trim() ??
+                        configuredThroughDHCPText,
+                  ),
                 );
           },
           onClearDNS: () =>

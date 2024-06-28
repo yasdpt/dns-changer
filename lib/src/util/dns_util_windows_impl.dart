@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dns_changer/src/models/network_interface_model.dart';
 import 'package:dns_changer/src/util/app_util.dart';
 import 'package:dns_changer/src/util/dns_util.dart';
-import 'package:flutter/foundation.dart';
 
 class DNSUtilWindowsImpl implements DNSUtil {
   // Get network interfaces string
@@ -35,9 +34,7 @@ class DNSUtilWindowsImpl implements DNSUtil {
         adminState: line[0],
         state: line[1],
         type: line[2],
-        dnsServers: dnsServers.isEmpty
-            ? "Configured through DHCP"
-            : dnsServers.join(", ").trim(),
+        dnsServers: dnsServers.join(", ").trim(),
       );
 
       networkInterfaces.add(networkInterface);
@@ -69,8 +66,6 @@ class DNSUtilWindowsImpl implements DNSUtil {
     String primary,
     String secondary,
   ) async {
-    debugPrint("Setting DNS for $interface: $primary, $secondary");
-
     // Clear any DNS first
     await clearDNS(interface);
 

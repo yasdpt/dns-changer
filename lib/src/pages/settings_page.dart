@@ -1,5 +1,6 @@
 import 'package:dns_changer/src/controllers/theme_controller.dart';
 import 'package:dns_changer/src/controllers/tray_controller.dart';
+import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/styles/text_styles.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
@@ -47,12 +48,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Theme",
+                    translate('theme', context),
                     style: Theme.of(context).textTheme.bodyMedium?.bold,
                   ),
                   CustomDropdownButton(
                     value: (theme?.name ?? "system").capitalize(),
                     items: const ["System", "Light", "Dark"],
+                    customValueConverter: (value) {
+                      return translate(value.toLowerCase(), context);
+                    },
                     width: 108.0,
                     onChanged: (value) {
                       ref
@@ -67,7 +71,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Auto startup",
+                    translate('autoStartup', context),
                     style: Theme.of(context).textTheme.bodyMedium?.bold,
                   ),
                   Switch(
@@ -87,7 +91,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Minimize to tray",
+                    translate('minimizeToTray', context),
                     style: Theme.of(context).textTheme.bodyMedium?.bold,
                   ),
                   Switch(

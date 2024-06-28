@@ -1,3 +1,4 @@
+import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/styles/text_styles.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
@@ -20,12 +21,12 @@ class AboutPage extends StatelessWidget {
         ),
         gapH16,
         Text(
-          "Open-Source multiplatform DNS Changer",
+          translate('appDetail', context),
           style: Theme.of(context).textTheme.bodyMedium?.bold,
         ),
         gapH8,
         Text(
-          "Version ${AppConsts.appVersion}",
+          "${translate('version', context)} ${AppConsts.appVersion}",
           style: Theme.of(context).textTheme.bodySmall,
         ),
         gapH8,

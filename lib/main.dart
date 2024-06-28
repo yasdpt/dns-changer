@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dns_changer/src/controllers/theme_controller.dart';
+import 'package:dns_changer/src/localization/language_config.dart';
 import 'package:dns_changer/src/pages/main_page.dart';
 import 'package:dns_changer/src/styles/app_themes.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
@@ -53,7 +54,11 @@ class MainApp extends ConsumerWidget {
     final theme = ref.watch(themeControllerProvider);
 
     return MaterialApp(
+      title: AppConsts.appName,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: LanguageConfig.localizationDelegates,
+      supportedLocales: LanguageConfig.appLocales,
+      locale: LanguageConfig.appLocales.first,
       themeMode: theme,
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
