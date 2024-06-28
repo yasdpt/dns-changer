@@ -2,6 +2,7 @@ import 'package:dns_changer/src/localization/language_constraints.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/styles/text_styles.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
+import 'package:dns_changer/src/util/app_util.dart';
 import 'package:dns_changer/src/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class AboutPage extends StatelessWidget {
         IconWidget(
           icon: AppConsts.githubIcon,
           color: Theme.of(context).textTheme.bodySmall?.color,
-          onTap: () {},
+          onTap: () => AppUtil.launchGithubUrl(),
         ),
       ],
     );

@@ -1,10 +1,10 @@
 import 'package:dns_changer/src/controllers/page_controller.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/styles/app_sizes.dart';
+import 'package:dns_changer/src/util/app_util.dart';
 import 'package:dns_changer/src/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SideBarWidget extends ConsumerWidget {
   const SideBarWidget({super.key});
@@ -48,7 +48,7 @@ class SideBarWidget extends ConsumerWidget {
             IconWidget(
               icon: AppConsts.githubIcon,
               color: Theme.of(context).textTheme.bodySmall?.color,
-              onTap: () => _launchGithubUrl(),
+              onTap: () => AppUtil.launchGithubUrl(),
             ),
             gapH8,
           ],
@@ -63,11 +63,5 @@ class SideBarWidget extends ConsumerWidget {
         ),
       ],
     );
-  }
-
-  Future<void> _launchGithubUrl() async {
-    if (!await launchUrl(Uri.parse(AppConsts.appGithubUrl))) {
-      throw Exception('Could not launch github url');
-    }
   }
 }

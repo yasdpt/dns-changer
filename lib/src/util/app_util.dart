@@ -1,8 +1,10 @@
 import 'package:dns_changer/src/styles/app_colors.dart';
+import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppUtil {
   static final _whitespaceRE = RegExp(r"\s+");
@@ -41,6 +43,12 @@ class AppUtil {
       curve: Curves.ease,
       persistent: persistent,
     );
+  }
+
+  static Future<void> launchGithubUrl() async {
+    if (!await launchUrl(Uri.parse(AppConsts.appGithubUrl))) {
+      throw Exception('Could not launch github url');
+    }
   }
 }
 
