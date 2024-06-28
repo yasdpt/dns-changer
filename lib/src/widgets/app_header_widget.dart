@@ -28,11 +28,6 @@ class AppHeaderWidget extends ConsumerWidget {
                         AppConsts.appName,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      gapW4,
-                      Text(
-                        AppConsts.appVersion,
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
                     ],
                   ),
                 ),

@@ -4,7 +4,7 @@ import 'package:dns_changer/src/models/dns_provider_model.dart';
 
 class AppConsts {
   static const String appName = "DNS Changer";
-  static const String appVersion = "v0.1";
+  static const String appVersion = "1.0.0";
   static const String appGithubUrl = "https://github.com/yasdpt/dns-changer";
   static const String fontFamily = "Vazirmatn";
   static const double borderRadius = 12.0;
