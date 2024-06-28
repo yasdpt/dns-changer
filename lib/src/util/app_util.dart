@@ -1,6 +1,8 @@
 import 'package:dns_changer/src/styles/app_colors.dart';
+import 'package:dns_changer/src/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class AppUtil {
   static final _whitespaceRE = RegExp(r"\s+");
@@ -22,6 +24,23 @@ class AppUtil {
     }
 
     await launchAtStartup.disable();
+  }
+
+  static void showSnackBar(
+    BuildContext context, {
+    required String message,
+    bool isError = false,
+    bool persistent = false,
+  }) {
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar(message: message, isError: isError), // Custom Widget
+      padding: const EdgeInsets.only(bottom: 48.0),
+      snackBarPosition: SnackBarPosition.bottom,
+      animationDuration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+      persistent: persistent,
+    );
   }
 }
 

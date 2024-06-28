@@ -10,11 +10,13 @@ class DNSConfigButtonsWidget extends StatelessWidget {
     required this.onSetDNS,
     required this.onClearDNS,
     required this.onFlushDNS,
+    this.setDNSLoading = false,
   });
 
   final VoidCallback onSetDNS;
   final VoidCallback onClearDNS;
   final VoidCallback onFlushDNS;
+  final bool setDNSLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +39,19 @@ class DNSConfigButtonsWidget extends StatelessWidget {
                           Colors.white),
                 ),
               ),
-              child: Text(
-                translate('setDNS', context),
-                style: Theme.of(context).textTheme.bodyMedium?.bold,
-              ),
+              child: setDNSLoading
+                  ? SizedBox(
+                      width: 24.0,
+                      height: 24.0,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).textTheme.bodySmall?.color,
+                        strokeWidth: 2.0,
+                      ),
+                    )
+                  : Text(
+                      translate('setDNS', context),
+                      style: Theme.of(context).textTheme.bodyMedium?.bold,
+                    ),
             ),
             gapW12,
             ElevatedButton(
