@@ -50,11 +50,13 @@ class _DNSPageState extends ConsumerState<DNSPage> {
               currentDNSProvider.secondary,
             );
 
+            final dnsServers = await _dnsUtil?.getCurrentDNSServers();
+
             // Update current interface with new dns
             ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
                   currentNetworkInterface.copyWith(
-                      dnsServers:
-                          "${currentDNSProvider.primary}, ${currentDNSProvider.secondary}"),
+                      dnsServers: dnsServers?.join(", ").trim() ??
+                          "Configured through DHCP"),
                 );
           },
           onClearDNS: () =>
