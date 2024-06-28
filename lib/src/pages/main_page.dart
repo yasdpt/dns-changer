@@ -3,7 +3,6 @@ import 'package:dns_changer/src/controllers/tray_controller.dart';
 import 'package:dns_changer/src/pages/about_page.dart';
 import 'package:dns_changer/src/pages/dns_page.dart';
 import 'package:dns_changer/src/pages/settings_page.dart';
-import 'package:dns_changer/src/styles/app_sizes.dart';
 import 'package:dns_changer/src/util/app_consts.dart';
 import 'package:dns_changer/src/widgets/app_header_widget.dart';
 import 'package:dns_changer/src/widgets/side_bar_widget.dart';
@@ -61,13 +60,14 @@ class _MainPageState extends ConsumerState<MainPage> with TrayListener {
               child: Row(
                 children: [
                   const SideBarWidget(),
-                  gapW12,
-                  switch (page) {
-                    0 => const DNSPage(),
-                    1 => const SettingsPage(),
-                    2 => const AboutPage(),
-                    _ => const SizedBox.shrink(),
-                  }
+                  Expanded(
+                    child: switch (page) {
+                      0 => const DNSPage(),
+                      1 => const SettingsPage(),
+                      2 => const AboutPage(),
+                      _ => const SizedBox.shrink(),
+                    },
+                  )
                 ],
               ),
             )
