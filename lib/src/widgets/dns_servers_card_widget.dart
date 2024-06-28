@@ -81,91 +81,118 @@ class _DNSServersCardWidgetState extends ConsumerState<DNSServersCardWidget> {
               children: [
                 Row(
                   children: [
-                    gapW2,
-                    Text(
-                      "Provider name:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
+                    SizedBox(
+                      height: 112,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Provider name:",
+                            style:
+                                Theme.of(context).textTheme.bodyMedium?.medium,
+                          ),
+                          Text(
+                            "Latency:",
+                            style:
+                                Theme.of(context).textTheme.bodyMedium?.medium,
+                          ),
+                          Text(
+                            "DNS Server #1:",
+                            style:
+                                Theme.of(context).textTheme.bodyMedium?.medium,
+                          ),
+                          Text(
+                            "DNS Server #2:",
+                            style:
+                                Theme.of(context).textTheme.bodyMedium?.medium,
+                          ),
+                        ],
+                      ),
                     ),
                     gapW8,
-                    Text(
-                      selectedDNSProvider.name,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                gapH8,
-                Row(
-                  children: [
-                    const SizedBox(width: 45),
-                    Text(
-                      "Latency:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
-                    ),
-                    gapW8,
-                    LatencyIndicatorWidget(latency: num.parse(_currentPing)),
-                    gapW8,
-                    Text("$_currentPing ms"),
-                    gapW4,
-                    IconWidget(
-                      icon: AppConsts.updateIcon,
-                      size: 24.0,
-                      onTap: () => _populateData(
-                        selectedDNSProvider: selectedDNSProvider,
+                    SizedBox(
+                      height: 112,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2.0),
+                            child: Text(
+                              selectedDNSProvider.name,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6.0),
+                            child: Row(
+                              children: [
+                                LatencyIndicatorWidget(
+                                    latency: num.parse(_currentPing)),
+                                gapW8,
+                                Text(
+                                  "$_currentPing ms",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                gapW4,
+                                IconWidget(
+                                  icon: AppConsts.updateIcon,
+                                  size: 24.0,
+                                  onTap: () => _populateData(
+                                    selectedDNSProvider: selectedDNSProvider,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2.0),
+                                child: Text(
+                                  selectedDNSProvider.primary,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ),
+                              gapW4,
+                              IconWidget(
+                                icon: AppConsts.copyIcon,
+                                size: 24.0,
+                                onTap: () async {
+                                  await FlutterClipboard.copy(
+                                    selectedDNSProvider.primary,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2.0),
+                                child: Text(
+                                  selectedDNSProvider.secondary,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ),
+                              gapW4,
+                              IconWidget(
+                                icon: AppConsts.copyIcon,
+                                size: 24.0,
+                                onTap: () async {
+                                  await FlutterClipboard.copy(
+                                    selectedDNSProvider.secondary,
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ],
                 ),
-                gapH8,
-                Row(
-                  children: [
-                    const SizedBox(width: 3),
-                    Text(
-                      "DNS Server #1:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
-                    ),
-                    gapW8,
-                    Text(
-                      selectedDNSProvider.primary,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    gapW4,
-                    IconWidget(
-                      icon: AppConsts.copyIcon,
-                      size: 24.0,
-                      onTap: () async {
-                        await FlutterClipboard.copy(
-                          selectedDNSProvider.primary,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                gapH8,
-                Row(
-                  children: [
-                    const SizedBox(width: 3),
-                    Text(
-                      "DNS Server #2:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
-                    ),
-                    gapW8,
-                    Text(
-                      selectedDNSProvider.secondary,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    gapW4,
-                    IconWidget(
-                      icon: AppConsts.copyIcon,
-                      size: 24.0,
-                      onTap: () async {
-                        await FlutterClipboard.copy(
-                          selectedDNSProvider.secondary,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                gapH8,
               ],
             ),
           ),

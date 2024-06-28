@@ -83,71 +83,67 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
         ),
         gapH16,
         Padding(
-            padding: const EdgeInsetsDirectional.only(start: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    gapW2,
-                    Text(
-                      "Admin state:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
-                    ),
-                    gapW8,
-                    Text(
-                      selectedInterface.adminState,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                gapH8,
-                Row(
-                  children: [
-                    const SizedBox(width: 45),
-                    Text(
-                      "State:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
-                    ),
-                    gapW8,
-                    Text(
-                      selectedInterface.state,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                gapH8,
-                Row(
-                  children: [
-                    const SizedBox(width: 48),
-                    Text(
-                      "Type:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
-                    ),
-                    gapW8,
-                    Text(
-                      selectedInterface.type,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                gapH8,
-                Row(
-                  children: [
-                    Text(
-                      "DNS Servers:",
-                      style: Theme.of(context).textTheme.bodyMedium?.medium,
-                    ),
-                    gapW8,
-                    Text(
-                      selectedInterface.dnsServers,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                gapH8,
-              ],
-            )),
+          padding: const EdgeInsetsDirectional.only(start: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Admin state:",
+                        style: Theme.of(context).textTheme.bodyMedium?.medium,
+                      ),
+                      gapH8,
+                      Text(
+                        "State:",
+                        style: Theme.of(context).textTheme.bodyMedium?.medium,
+                      ),
+                      gapH8,
+                      Text(
+                        "Type:",
+                        style: Theme.of(context).textTheme.bodyMedium?.medium,
+                      ),
+                      gapH8,
+                      Text(
+                        "DNS Servers:",
+                        style: Theme.of(context).textTheme.bodyMedium?.medium,
+                      )
+                    ],
+                  ),
+                  gapW8,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        selectedInterface.adminState,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      gapH12,
+                      Text(
+                        selectedInterface.state,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      gapH12,
+                      Text(
+                        selectedInterface.type,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      gapH12,
+                      Text(
+                        selectedInterface.dnsServers,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
