@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dns_changer/src/models/network_interface_model.dart';
 import 'package:dns_changer/src/util/dns_util.dart';
-import 'package:flutter/foundation.dart';
 
 class DNSUtilLinuxImpl implements DNSUtil {
   // Get network interfaces string
@@ -19,8 +18,6 @@ class DNSUtilLinuxImpl implements DNSUtil {
       'grep',
       ['nameserver', '/etc/resolv.conf', '|', 'awk', "'{print", "\$2}'"],
     );
-
-    debugPrint("result of query: ${result.stdout}");
 
     if ((result.stdout as String).isEmpty) {
       return [];
