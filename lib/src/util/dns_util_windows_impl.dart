@@ -108,9 +108,9 @@ class DNSUtilWindowsImpl implements DNSUtil {
       final regExp = RegExp(r"time=(\d+)ms");
       final match = regExp.firstMatch(result.stdout);
 
-      return match?.group(1) ?? "N/A";
+      return match?.group(1) ?? "-1";
     }
 
-    return "N/A";
+    return "-1";
   }
 }
