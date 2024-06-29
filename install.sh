@@ -4,7 +4,9 @@ set -e
 
 # Define variables
 APP_NAME="DNSChanger"
+APP_VERSION="v1.0.0"
 GITHUB_REPO="yasdpt/dns-changer"
+RELEASE_FILE="DNSChanger-linux-x64-$APP_VERSION.tar.gz"
 INSTALL_DIR="/opt/$APP_NAME"
 DESKTOP_FILE="/usr/share/applications/$APP_NAME.desktop"
 TEMP_DIR="/tmp/$APP_NAME-install"
@@ -27,26 +29,32 @@ done
 mkdir -p "$TEMP_DIR"
 cd "$TEMP_DIR"
 
-# Fetch the latest release information
-echo "Fetching latest release information..."
-LATEST_RELEASE=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest")
-DOWNLOAD_URL=$(echo "$LATEST_RELEASE" | jq -r '.assets[] | select(.name | startswith("'$APP_NAME'") and endswith(".tar.gz")) | .browser_download_url')
+# Construct the download URL
+DOWNLOAD_URL="https://github.com/$GITHUB_REPO/releases/download/$APP_VERSION/$RELEASE_FILE"
 
-if [ -z "$DOWNLOAD_URL" ]; then
-  echo "Failed to find download URL. Please check the repository and release asset names."
-  exit 1
-fi
+echo "Download URL: $DOWNLOAD_URL"
 
 # Download the release
-echo "Downloading latest release..."
-curl -L -o "${APP_NAME}.tar.gz" "$DOWNLOAD_URL"
+echo "Downloading release..."
+if curl -L -o "$RELEASE_FILE" "$DOWNLOAD_URL"; then
+    echo "Download successful."
+else
+    echo "Error: Failed to download the release file. Please check the URL and your internet connection."
+    exit 1
+fi
 
-# Extract the download
 echo "Extracting files..."
-tar -xzf "${APP_NAME}.tar.gz"
+if tar -xzf "$RELEASE_FILE"; then
+    echo "Extraction successful."
+else
+    echo "Error: Failed to extract the release file. The file may be corrupted or not a valid tar.gz archive."
+    exit 1
+fi
 
 # Create installation directory
 mkdir -p "$INSTALL_DIR"
+
+rm $RELEASE_FILE
 
 # Copy application files
 echo "Installing application files..."
@@ -57,14 +65,14 @@ echo "Creating desktop entry..."
 cat > "$DESKTOP_FILE" << EOL
 [Desktop Entry]
 Name=$APP_NAME
-Exec=$INSTALL_DIR/$APP_NAME
+Exec=$INSTALL_DIR/dns_changer
 Icon=$INSTALL_DIR/data/flutter_assets/assets/images/logo.png
 Type=Application
 Categories=Utility;
 EOL
 
 # Set permissions
-chmod +x "$INSTALL_DIR/$APP_NAME"
+chmod +x "$INSTALL_DIR/dns_changer"
 
 # Clean up
 cd /
@@ -77,9 +85,11 @@ apt-get update && apt-get install libayatana-appindicator3-dev -y
 echo "Disabling auto DNS change by other applications..."
 systemctl disable --now systemd-resolved.service
 rm /etc/resolv.conf
+echo 'nameserver 8.8.8.8' | tee /etc/resolv.conf > /dev/null
+echo 'nameserver 8.8.4.4' | tee -a /etc/resolv.conf > /dev/null
 
-echo '[main]' | tee /etc/NetworkManager/conf.d/no-dns.conf
-echo 'dns=none' | tee -a /etc/NetworkManager/conf.d/no-dns.conf
+echo '[main]' | tee /etc/NetworkManager/conf.d/no-dns.conf > /dev/null
+echo 'dns=none' | tee -a /etc/NetworkManager/conf.d/no-dns.conf > /dev/null
 systemctl restart NetworkManager.service
 
 echo "Installation completed. You can now run $APP_NAME from your application menu."
