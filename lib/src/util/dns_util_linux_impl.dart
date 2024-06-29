@@ -51,8 +51,11 @@ nameserver $secondary" > /etc/resolv.conf'''
 
   // Delete dns records
   @override
-  Future<void> clearDNS(String interface) async => await Process.run(
-      'netsh', ['interface', 'ip', 'set', 'dns', '"$interface"', 'dhcp']);
+  Future<void> clearDNS(String interface) async => await setDNS(
+        interface,
+        "8.8.8.8",
+        "8.8.4.4",
+      );
 
   // Flush dns
   @override
