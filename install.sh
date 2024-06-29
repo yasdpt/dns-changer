@@ -4,12 +4,14 @@ set -e
 
 # Define variables
 APP_NAME="DNSChanger"
+EXECUTABLE_NAME="dns_changer"
 APP_VERSION="v1.0.0"
 GITHUB_REPO="yasdpt/dns-changer"
 RELEASE_FILE="DNSChanger-linux-x64-$APP_VERSION.tar.gz"
 INSTALL_DIR="/opt/$APP_NAME"
 DESKTOP_FILE="/usr/share/applications/$APP_NAME.desktop"
 TEMP_DIR="/tmp/$APP_NAME-install"
+WRAPPER_SCRIPT="/usr/local/bin/run-$APP_NAME"
 
 # Check if running with sudo/root
 if [ "$EUID" -ne 0 ]; then
@@ -60,19 +62,51 @@ rm $RELEASE_FILE
 echo "Installing application files..."
 cp -r * "$INSTALL_DIR"
 
+# Create wrapper script
+echo "Creating wrapper script..."
+cat > "$WRAPPER_SCRIPT" << EOL
+#!/bin/sh
+pkexec "/opt/$APP_NAME/$EXECUTABLE_NAME" "$@"
+EOL
+
+POLICY_FILE="/usr/share/polkit-1/actions/$APP_NAME.policy"
+cat > "$POLICY_FILE" << EOL
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+
+<policyconfig>
+
+  <action id="org.freedesktop.policykit.pkexec.run-$APP_NAME">
+    <description>Run $APP_NAME</description>
+    <message>Authentication is required to run $APP_NAME</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/opt/$APP_NAME/$EXECUTABLE_NAME</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">TRUE</annotate>
+  </action>
+
+</policyconfig>
+EOL
+
 # Create desktop entry
 echo "Creating desktop entry..."
 cat > "$DESKTOP_FILE" << EOL
 [Desktop Entry]
 Name=$APP_NAME
-Exec=$INSTALL_DIR/dns_changer
+Exec=$WRAPPER_SCRIPT
 Icon=$INSTALL_DIR/data/flutter_assets/assets/images/logo.png
 Type=Application
 Categories=Utility;
 EOL
 
 # Set permissions
-chmod +x "$INSTALL_DIR/dns_changer"
+chmod 755 $WRAPPER_SCRIPT
+chmod 755 "$INSTALL_DIR/$EXECUTABLE_NAME"
 
 # Clean up
 cd /
