@@ -30,7 +30,7 @@ cd "$TEMP_DIR"
 # Fetch the latest release information
 echo "Fetching latest release information..."
 LATEST_RELEASE=$(curl -s "https://api.github.com/repos/$GITHUB_REPO/releases/latest")
-DOWNLOAD_URL=$(echo "$LATEST_RELEASE" | jq -r '.assets[] | select(.name | endswith(".zip")) | .browser_download_url')
+DOWNLOAD_URL=$(echo "$LATEST_RELEASE" | jq -r '.assets[] | select(.name | startswith("'$APP_NAME'") and endswith(".tar.gz")) | .browser_download_url')
 
 if [ -z "$DOWNLOAD_URL" ]; then
   echo "Failed to find download URL. Please check the repository and release asset names."
@@ -39,11 +39,11 @@ fi
 
 # Download the release
 echo "Downloading latest release..."
-curl -L -o "${APP_NAME}.zip" "$DOWNLOAD_URL"
+curl -L -o "${APP_NAME}.tar.gz" "$DOWNLOAD_URL"
 
-# Unzip the download
+# Extract the download
 echo "Extracting files..."
-unzip -q "${APP_NAME}.zip"
+tar -xzf "${APP_NAME}.tar.gz"
 
 # Create installation directory
 mkdir -p "$INSTALL_DIR"
