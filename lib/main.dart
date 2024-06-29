@@ -16,6 +16,11 @@ Future<void> main() async {
   _setupStartup();
   await _setupWindow();
 
+  // Set sudo permissions for Linux app
+  if (Platform.isLinux) {
+    await Process.run('pkexec', ['env']);
+  }
+
   runApp(const ProviderScope(child: MainApp()));
 }
 
