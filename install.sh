@@ -58,7 +58,7 @@ cat > "$DESKTOP_FILE" << EOL
 [Desktop Entry]
 Name=$APP_NAME
 Exec=$INSTALL_DIR/$APP_NAME
-Icon=$INSTALL_DIR/data/flutter_assets/assets/app_icon.png
+Icon=$INSTALL_DIR/data/flutter_assets/assets/images/logo.png
 Type=Application
 Categories=Utility;
 EOL
