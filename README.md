@@ -25,6 +25,7 @@ This is a DNS Changer application for Windows and Linux. This application can he
 - [Installation](#installation)
   - [Windows](#windows)
   - [Linux](#linux)
+    - [Manual installation](#manual-installation)
   - [Mac](#mac)
 - [Contribution](#contribution)
   - [Setup](#project-setup-instructions)
