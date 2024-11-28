@@ -143,6 +143,6 @@ class DNSUtilWindowsImpl implements DNSUtil {
     final shell = Shell();
 
     await shell.run(
-        "powershell -command '${enabled ? "Enable" : "Disable"}-NetAdapterBinding -Name '$interface' -ComponentID ms_tcpip6'");
+        "powershell -command '${enabled ? "Enable" : "Disable"}-NetAdapterBinding -Name \"$interface\" -ComponentID ms_tcpip6'");
   }
 }
