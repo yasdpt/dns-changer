@@ -6,7 +6,7 @@ part of 'tray_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trayControllerHash() => r'82817771c25b25070c9c2884c5128a528de5bda1';
+String _$trayControllerHash() => r'7a45ac236cae5f364b70e50d3beecdac55f5df8a';
 
 /// See also [TrayController].
 @ProviderFor(TrayController)
@@ -23,4 +23,4 @@ final trayControllerProvider =
 
 typedef _$TrayController = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

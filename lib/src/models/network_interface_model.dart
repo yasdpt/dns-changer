@@ -5,6 +5,7 @@ class NetworkInterfaceModel extends Equatable {
   final String adminState;
   final String state;
   final String type;
+  final bool? ipv6Enabled;
   final String dnsServers;
 
   const NetworkInterfaceModel({
@@ -12,6 +13,7 @@ class NetworkInterfaceModel extends Equatable {
     this.adminState = "",
     this.state = "",
     this.type = "",
+    this.ipv6Enabled,
     this.dnsServers = "",
   });
 
@@ -20,6 +22,7 @@ class NetworkInterfaceModel extends Equatable {
     String? adminState,
     String? state,
     String? type,
+    bool? ipv6Enabled,
     String? dnsServers,
   }) =>
       NetworkInterfaceModel(
@@ -27,9 +30,11 @@ class NetworkInterfaceModel extends Equatable {
         adminState: adminState ?? this.adminState,
         state: state ?? this.state,
         type: type ?? this.type,
+        ipv6Enabled: ipv6Enabled,
         dnsServers: dnsServers ?? this.dnsServers,
       );
 
   @override
-  List<Object?> get props => [name, adminState, state, type, dnsServers];
+  List<Object?> get props =>
+      [name, adminState, state, type, ipv6Enabled, dnsServers];
 }

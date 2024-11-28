@@ -11,4 +11,8 @@ class InterfaceController extends _$InterfaceController {
   void setCurrentInterface(NetworkInterfaceModel interface) {
     state = interface;
   }
+
+  void setIPV6Status(bool? isEnabled) {
+    state = state.copyWith(ipv6Enabled: isEnabled);
+  }
 }
