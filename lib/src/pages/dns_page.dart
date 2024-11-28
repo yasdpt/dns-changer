@@ -78,6 +78,7 @@ class _DNSPageState extends ConsumerState<DNSPage> {
           currentNetworkInterface.copyWith(
             dnsServers:
                 dnsServers?.join(", ").trim() ?? configuredThroughDHCPText,
+            ipv6Enabled: currentNetworkInterface.ipv6Enabled,
           ),
         );
 
@@ -94,6 +95,7 @@ class _DNSPageState extends ConsumerState<DNSPage> {
     ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
           currentNetworkInterface.copyWith(
             dnsServers: configuredThroughDHCPText,
+            ipv6Enabled: currentNetworkInterface.ipv6Enabled,
           ),
         );
     // ignore: use_build_context_synchronously
