@@ -56,7 +56,7 @@ class SideBarWidget extends ConsumerWidget {
         gapW8,
         Container(
           width: 1,
-          height: 626,
+          height: 653,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onSurface,
           ),

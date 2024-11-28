@@ -74,12 +74,20 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
         CustomDropdownButton(
           value: selectedInterface.name,
           items: _interfaces.map((element) => element.name).toList(),
-          onChanged: (value) {
-            ref
-                .read(interfaceControllerProvider.notifier)
-                .setCurrentInterface(_interfaces.firstWhere(
-                  (inteface) => inteface.name == value,
-                ));
+          onChanged: (value) async {
+            final selectedInterface = _interfaces.firstWhere(
+              (inteface) => inteface.name == value,
+            );
+            final result = widget.dnsUtil.isIPV6Enabled(selectedInterface.name);
+
+            ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
+                selectedInterface.copyWith(ipv6Enabled: null));
+
+            result.then((isEnabled) {
+              ref
+                  .read(interfaceControllerProvider.notifier)
+                  .setIPV6Status(isEnabled);
+            });
           },
         ),
         gapH16,
@@ -109,6 +117,11 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
                       ),
                       gapH8,
                       Text(
+                        "${translate('ipv6', context)}:",
+                        style: Theme.of(context).textTheme.bodyMedium?.medium,
+                      ),
+                      gapH8,
+                      Text(
                         "${translate('dnsServers', context)}:",
                         style: Theme.of(context).textTheme.bodyMedium?.medium,
                       )
@@ -133,7 +146,64 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
                         selectedInterface.type,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
-                      gapH12,
+                      gapH4,
+                      selectedInterface.ipv6Enabled == null
+                          ? Container(
+                              margin: const EdgeInsets.symmetric(vertical: 9.0),
+                              child: const SizedBox(
+                                width: 16.0,
+                                height: 16.0,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : Row(
+                              children: [
+                                Text(
+                                  selectedInterface.ipv6Enabled!
+                                      ? translate("enabled", context)
+                                      : translate("disabled", context),
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                gapW4,
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: Checkbox(
+                                    value: selectedInterface.ipv6Enabled,
+                                    splashRadius: 0.0,
+                                    fillColor: WidgetStateProperty.resolveWith(
+                                        (state) => Theme.of(context)
+                                            .colorScheme
+                                            .surface),
+                                    checkColor: Colors.white,
+                                    visualDensity: VisualDensity.compact,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
+                                    side: BorderSide.none,
+                                    onChanged: (value) async {
+                                      ref
+                                          .read(interfaceControllerProvider
+                                              .notifier)
+                                          .setIPV6Status(null);
+
+                                      await widget.dnsUtil.changeIPV6Status(
+                                        selectedInterface.name,
+                                        value ?? false,
+                                      );
+
+                                      ref
+                                          .read(interfaceControllerProvider
+                                              .notifier)
+                                          .setIPV6Status(value);
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                      gapH2,
                       Text(
                         selectedInterface.dnsServers.isEmpty
                             ? translate('configuredThroughDHCP', context)
@@ -153,13 +223,15 @@ class _CardWindowsState extends ConsumerState<_CardWindows> {
 
   void _populateData() async {
     final interfaces = await widget.dnsUtil.getNetworkInterfacesList();
+    final isIPV6Enabed =
+        await widget.dnsUtil.isIPV6Enabled(interfaces.first.name);
 
     setState(() {
       _interfaces.clear();
       _interfaces.addAll(interfaces);
-      ref
-          .read(interfaceControllerProvider.notifier)
-          .setCurrentInterface(_interfaces.first);
+      ref.read(interfaceControllerProvider.notifier).setCurrentInterface(
+            _interfaces.first.copyWith(ipv6Enabled: isIPV6Enabed),
+          );
     });
   }
 
