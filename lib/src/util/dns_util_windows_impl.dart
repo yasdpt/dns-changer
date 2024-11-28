@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dns_changer/src/models/network_interface_model.dart';
 import 'package:dns_changer/src/util/app_util.dart';
 import 'package:dns_changer/src/util/dns_util.dart';
+import 'package:process_run/process_run.dart';
 
 class DNSUtilWindowsImpl implements DNSUtil {
   // Get network interfaces string
@@ -112,5 +113,36 @@ class DNSUtilWindowsImpl implements DNSUtil {
     }
 
     return "-1";
+  }
+
+  @override
+  Future<bool> isIPV6Enabled(String interface) async {
+    final shell = Shell();
+    final ipv6Status = await shell.run(
+        "powershell -command 'Get-NetAdapterBinding -ComponentID ms_tcpip6'");
+
+    bool isIPV6Enabled = false;
+
+    if (ipv6Status.first.outText != "") {
+      final String ipv6List = ipv6Status.first.outText;
+      final List<String> lines = ipv6List.trim().split('\n');
+
+      for (var line in lines) {
+        if (line.contains(interface)) {
+          line = AppUtil.cleanupWhitespace(line).trim();
+          isIPV6Enabled = line.substring(line.length - 4) == "True";
+        }
+      }
+    }
+
+    return isIPV6Enabled;
+  }
+
+  @override
+  Future<void> changeIPV6Status(String interface, bool enabled) async {
+    final shell = Shell();
+
+    await shell.run(
+        "powershell -command '${enabled ? "Enable" : "Disable"}-NetAdapterBinding -Name '$interface' -ComponentID ms_tcpip6'");
   }
 }

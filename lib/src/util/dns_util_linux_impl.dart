@@ -74,4 +74,10 @@ nameserver $secondary" > /etc/resolv.conf'''
 
     return "-1";
   }
+
+  @override
+  Future<bool> isIPV6Enabled(String interface) async => true;
+
+  @override
+  Future<void> changeIPV6Status(String interface, bool enabled) async {}
 }
